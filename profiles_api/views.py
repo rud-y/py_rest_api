@@ -2,6 +2,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from profiles_api import serializers
+from rest_framework import viewsets
 
 class ExampleApiView(APIView):
     """Test API View"""
@@ -41,3 +42,16 @@ class ExampleApiView(APIView):
 
     def delete(self, request, pk=None):
         return Response({'method': 'DELETE'})
+    
+class ExampleViewSet(viewsets.ViewSet):
+    """Test API ViewSet"""
+
+    def list(self, request):
+        """Return a example message"""
+        a_viewset = [
+            'Uses actions (list create, retrieve, update, partial_update)',
+            'Automatically maps to URLs using Routers',
+            'Provides more functionality with less code'
+        ]
+
+        return Response({'message': 'Example', 'a_viewset': a_viewset})
