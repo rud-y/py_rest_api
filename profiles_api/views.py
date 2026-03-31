@@ -45,6 +45,7 @@ class ExampleApiView(APIView):
     
 class ExampleViewSet(viewsets.ViewSet):
     """Test API ViewSet"""
+    serializer_class = serializers.ExampleSerializer
 
     def list(self, request):
         """Return a example message"""
@@ -55,3 +56,33 @@ class ExampleViewSet(viewsets.ViewSet):
         ]
 
         return Response({'message': 'Example', 'a_viewset': a_viewset})
+    
+    def create(self, request):
+        """Create a new Example message"""
+        serializer = self.serializer_class(data=request.data)
+
+        if serializer.is_valid():
+            name = serializer.validated_data.get('name')
+            message = f'Hello {name} !'
+            return Response({'message': message})
+        else:
+            return Response(
+                serializer.errors,
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        
+    def retrieve(self, request, pk=None):
+       """Handle get object by the id"""
+       return Response({'http_method': 'GET'})
+    
+    def update(self, request, pk=None):
+        """Handle update an object"""
+        return Response({'http_methodf': 'PUT'})
+    
+    def partial_update(self, request, pk=None):
+        """Handle update the part of an objec"""
+        return Response({'htttp_method': 'PATCH'})
+    
+    def destroy(self, request, pk=None):
+        """Handle removing object"""
+        return Response({'http_method', 'DELETE'})
